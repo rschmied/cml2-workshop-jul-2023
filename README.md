@@ -1,8 +1,8 @@
 # CML 2.5 Hands-on Lab
 
-<img src="./resources/poweredby-cml-1688644139979-2.png" alt="img"  />
+<img src="./resources/poweredby-cml-1688644139979-2.png" alt="img" style="zoom:50%;" />
 
-Cisco Modeling Labs (CML) is the go-to tool for network simulation of Cisco reference platforms and beyond. In this workshop, we’re going to cover the product from A to Z with a special focus on automation.  In addition, we’re going to show how to extend the platform by adding  Kali Linux.
+Cisco Modeling Labs (CML) is the go-to tool for the simulation of virtual Cisco network devices and beyond. In this workshop, we’re going to cover the product from A to Z with a special focus on automation.  In addition, we’re going to show how to extend the platform by adding  Kali Linux.
 
 [TOC]
 
@@ -22,6 +22,10 @@ Cisco Modeling Labs (CML) is the go-to tool for network simulation of Cisco refe
 ## Prerequisites
 
 The workshop will be running on Cisco dCloud. The installation section will be "demo-only", you can later refer to it in the recording.
+
+A modern Web browser (Chrome / Firefox / Brave / Edge / Safari / ... ) is required. There's a preference for Chrome(ish) browsers.
+
+>  **Important** To access Cisco dCloud, each user must have a valid Cisco CCO ID. Otherwise, no access is possible.
 
 A link will be provided during the WebEx session which will assign each attendee a dCloud lab (limited seats available). When accessing this link, a page like this will be shown:
 
@@ -78,9 +82,7 @@ Then click that table row, on the new page enable the service by clicking the "o
 
 You should now be able to log into the CML host using SSH and get access to the command line:
 
-![image-20230706131229252](./resources/image-20230706131229252.png)
-
-**TODO:** provide a better screen shot
+![image-20230706164243076](./resources/image-20230706164243076.png)
 
 This concludes the Cockpit section.
 
@@ -155,24 +157,96 @@ $
 This file is now moved into the "dropfolder". The dropfolder is the location where the CML controller expects new images. This is the same location where files will show up when uploading through the UI or via SCP on port TCP/22 to the controller.
 
 ```
-$ cp kali.qcow2 /var/local/virl2/dropfolder
+$ sudo cp kali.qcow2 /var/local/virl2/dropfolder
 $ rm kali.qcow2
 ```
 
-(we can't move the file as the home directory and the VIRL2 directory are on different file systems)
+We have to copy and can not move the file as the home directory and the VIRL2 directory usually are on different file systems. On the dCloud instance, `mv` works as well.
 
 #### Steps to create a custom image
 
 To make the image we've just created available in CML, we need to go through a couple of steps:
 
-- Upload the disk image to the controller. This can be done either via the UI or via SCP. For larger images, the upload via SCP is recommended.
+- Upload the disk image to the controller. This can be done either via the UI or via SCP. For larger images, the upload via SCP is recommended (this is already done as part of the previous steps)
 - Create an image definition for the uploaded image
 - Create a node definition for the new node type
 - Link the image definition to the node definition
 
-**TODO:** need to add screenshots here with more details and experiment with Kali.
+##### Create the node definition
 
-This concludes the custom image section.
+- Navigate to Tools ➡ Node and Image Definitions
+- Ensure the "Node definition" tab is selected
+- Click the "Add" button
+  ![image-20230706165044978](./resources/image-20230706165044978.png)
+
+Filling the form is a bit tedious, so here's just a quick summary what should go into the fields:
+
+- ID should be "kali"
+- Description whatever you want
+- Nature is "server"
+- image definition is left blank for the moment
+- User interface
+  - "visible" is on
+  - Description is whatever you want
+  - prefix should be "kali-" (with the dash)
+  - Icon is "server"
+  - Label is "kali"
+- Linux Native Simulation
+  - Domain driver is "KVM"
+  - Disk Driver is "virtio"
+  - Set Memory to 512
+  - CPUs to 1
+  - CPU limit to 100
+  - Network driver is "virtio"
+  - Boot Disk size is 16 (GB). Make sure that the size here is at least as big as the size reported by the Qemu image tool (see above)
+  - Video model is "Cirrus"
+  - Video memory us set to "64"
+- Interfaces
+  - "Loopback interface" is set to off
+  - serial ports is set to 1
+  - default number of physical interfaces is set to 1
+  - add four interfaces and name them eth0, eth1, eth2 and eth3
+- Boot
+  - set timeout to 120
+- pyATS is disabled
+- Property inheritance is unchanged (all on)
+- Configuration generator is deselected (can't generate configurations for Kali)
+- Provisioning is "off"
+
+The click the "Create" button -- if anything is missing then the form will report it, otherwise things can still be changed after creation.
+
+##### Create the image definition
+
+- Navigate to Tools ➡ Node and Image Definitions
+- Ensure the "Image definition" tab is selected
+- Click the "Add" button
+- ID is "kali-6-1-0" or similar (needs to be unique)
+- Label is "Kali 6.1.0"
+- Description whatever you like
+- Select the disk image that we put into the drop folder `kali.qcow2`
+- Select the associated "kali" Node definition from the drop down
+
+Leave the rest as-is and click the "Create" button. This finalizes the new Kali node and image definition.
+
+##### Create a new Kali node
+
+We can now either create a new Kali lab or add a Kali node to an existing lab. After linking it to an external connector via an unmanaged switch it will happily boot and acquire an IP address:
+
+![image-20230706175553014](./resources/image-20230706175553014.png)
+
+This was especially easy since Kali automatically provides a console on the serial port (and on the graphical screen via VNC since we provided a graphics adapter which isn't strictly necessary).
+
+For other operating systems, some experimentation is required... 
+
+- what disk driver is required?
+- what NIC types are supported?
+- do we need a graphics adapter or not? Which one? How much memory?
+- Is additional storage / a data disk required?
+- and potentially more...
+
+In some cases (like with Windows 11) some virtual hardware might be needed which isn't currently available on CML (in this case, the TPM).
+
+This concludes the third party image section.
 
 ### Exploring and using the API via Swagger
 
@@ -197,7 +271,7 @@ This concludes the API via Swagger section.
 
 The PCL is available for download from the controller or on PyPI (Python package index). On the dCloud demo instance, the package is already installed. For the following sections we need a Terminal / CLI access. On the Windows machine, click Start, then type "command" (for "Command prompt") and **run it as administrator**:
 
-![Screenshot from 2023-07-06 12-07-31](./resources/Screenshot from 2023-07-06 12-07-31.png)
+![Screenshot from 2023-07-06 12-07-31](./resources/image-20230706120731000.png)
 
 The *administrator* bit is important to make some commands work later on. Note that this will start the shell in the Windows system directory. Change the working directory to the Administrator's home directory using:
 
@@ -210,6 +284,8 @@ We'll check now via `pip list` what Python packages are already installed. In th
 ![image-20230706084114426](./resources/image-20230706084114426.png)
 
 If the PCL is not installed, then a simple `pip install virl2-client` will do. 
+
+> **Note** The latest dCloud CML environment has the correct version already installed.
 
 The documentation for the PCL is built into the CML controller and can be opened by navigating to Tools ➡ Client Library which opens a new tab:
 
@@ -228,6 +304,18 @@ python demo1.py
 ```
 
 This example assumes you've copied the code example into a file called `demo1.py`.
+
+Ensure that you provide a resolvable hostname and disable the SSL verification. Here's a working example:
+
+```python
+from virl2_client import ClientLibrary
+client = ClientLibrary("https://cml", "admin", "C1sco12345", ssl_verify=False)
+
+all_lab_names = [lab.title for lab in client.all_labs()]
+print(all_lab_names)
+```
+
+![image-20230706181243403](./resources/image-20230706181243403.png)
 
 This concludes the PCL section.
 
