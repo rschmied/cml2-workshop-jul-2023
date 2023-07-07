@@ -1,6 +1,6 @@
 # CML 2.5 Hands-on Lab
 
-<img src="./resources/poweredby-cml-1688644139979-2.png" alt="img" style="zoom:50%;" />
+<img src="./resources/poweredby-cml-1688644139979-2.png" alt="img" style="zoom:40%;" />
 
 Cisco Modeling Labs (CML) is the go-to tool for the simulation of virtual Cisco network devices and beyond. In this workshop, we’re going to cover the product from A to Z with a special focus on automation. In addition, we’re going to show how to extend the platform by adding Kali Linux.
 
@@ -176,7 +176,7 @@ To make the image we've just created available in CML, we need to go through a c
 
 ##### Create the node definition
 
-- Navigate to Tools ➡ Node and Image Definitions
+- Navigate to *Tools* ➡ *Node and Image Definitions*
 - Ensure the "Node definition" tab is selected
 - Click the "Add" button
   ![image-20230706165044978](./resources/image-20230706165044978.png)
@@ -220,7 +220,7 @@ Then click the "Create" button -- if anything is missing then the form will repo
 
 ##### Create the image definition
 
-- Navigate to Tools ➡ Node and Image Definitions
+- Navigate to *Tools* ➡ *Node and Image Definitions*
 - Ensure the "Image definition" tab is selected
 - Click the "Add" button
 - ID is "kali-6-1-0" or similar (needs to be unique and should consider the fact that a newer image version might be added in the future)
@@ -256,7 +256,7 @@ This concludes the third party image section.
 
 CML includes complete API documentation. It has a convenient front end called "Swagger" which not only shows all the details of the API including data schema but also allows to run API calls and immediately see the results, typically in JSON.
 
-From the CML UI, navigate to Tools ➡ API Documentation. Note that the pad lock is closed which means that the API browser is already "authorized". If the lock is open then the API browser isn't authorized and a proper token must be provided using the authentication API endpoint.
+From the CML UI, navigate to *Tools* ➡ *API Documentation*. Note that the pad lock is closed which means that the API browser is already "authorized". If the lock is open then the API browser isn't authorized and a proper token must be provided using the authentication API endpoint.
 
 ![image-20230706082236119](./resources/image-20230706082236119.png)
 
@@ -291,7 +291,7 @@ If the PCL is not installed, then a simple `pip install virl2-client` will do.
 
 > **Note** the latest dCloud CML environment has the correct version already installed.
 
-The documentation for the PCL is built into the CML controller and can be opened by navigating to Tools ➡ Client Library which opens a new tab.
+The documentation for the PCL is built into the CML controller and can be opened by navigating to *Tools* ➡ *Client Library* which opens a new tab.
 
 ![image-20230706083000213](./resources/image-20230706083000213.png)
 
@@ -337,9 +337,9 @@ After the installation has succeeded, the `virl` command is available:
 
 ![image-20230706085018677](./resources/image-20230706085018677.png)
 
-After installation, the tool must be configured, the documentation is [available here](https://github.com/CiscoDevNet/virlutils#configuration). For this demo, we simply copy and change the user name from `demo` to `admin` in the `.virlrc` file that was already there. With a command prompt open in the Administrator's home directory `C:\Users\Administrator`, the file can be edited by running `notepad .virlrc`:
+After installation, the tool must be configured, the documentation is [available here](https://github.com/CiscoDevNet/virlutils#configuration). For this demo, we simply copy and change the user name from `demo` to `admin` in the `.virlrc` file that was already there.  Also ensure that the `VIRL_HOST` is set to `cml`. With a command prompt open in the Administrator's home directory `C:\Users\Administrator`, the file can be edited by running `notepad .virlrc`:
 
-![image-20230706085614942](./resources/image-20230706085614942.png)
+![image-20230707160041094](./resources/image-20230707160041094.png)
 
 Don't forget to save the file!
 
@@ -427,11 +427,11 @@ The built-in terminal server of CML allows secure and authenticated access to ot
 
 CML uses SSH on the standard SSH port TCP/22 to provide either a menu or, for advanced use cases, direct access to individual consoles of devices. The CML terminal server replaces the standard SSH server of the underlying OS. The OS SSH server is disabled by default. When enabled via Cockpit (as shown in one of the previous sections) the OS SSH server listens on TCP/1122.
 
-Use the PuTTY client on Windows and point it to the CML controller:
+Use the PuTTY client on Windows and point it to the CML controller using `cml` as the host name:
 
-![image-20230706122945194](./resources/image-20230706122945194.png)
+![image-20230707160259623](./resources/image-20230707160259623.png)
 
-Enter the hostname (cml-controller works here) and leave SSH selected for the connection type. Click "Open" (you might get a warning about the key fingerprints of the host that needs to be confirmed).
+Leave SSH selected for the connection type. Click "Open" (you might get a warning about the key fingerprints of the host that needs to be confirmed).
 
 ![image-20230706123118679](./resources/image-20230706123118679.png)
 
