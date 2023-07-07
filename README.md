@@ -455,6 +455,8 @@ This concludes the terminal server section.
 
 ### Additional tools and links
 
+- Cisco Modeling Labs home page https://developer.cisco.com/modeling-labs/
+- Cisco Modeling Labs documentation https://developer.cisco.com/docs/modeling-labs/2-5/
 - Ansible plug-in to automate labs is available in Ansible galaxy or [here](https://github.com/CiscoDevNet/ansible-virl).
 - Terraform provider available on [Hashicorp's registry](https://registry.terraform.io/providers/CiscoDevNet/cml2/latest/docs) or [here](https://github.com/CiscoDevNet/terraform-provider-cml2)
 - PyATS for automated device testing [here](https://developer.cisco.com/pyats/)
