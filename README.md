@@ -2,7 +2,7 @@
 
 <img src="./resources/poweredby-cml-1688644139979-2.png" alt="img" style="zoom:50%;" />
 
-Cisco Modeling Labs (CML) is the go-to tool for the simulation of virtual Cisco network devices and beyond. In this workshop, we’re going to cover the product from A to Z with a special focus on automation.  In addition, we’re going to show how to extend the platform by adding  Kali Linux.
+Cisco Modeling Labs (CML) is the go-to tool for the simulation of virtual Cisco network devices and beyond. In this workshop, we’re going to cover the product from A to Z with a special focus on automation. In addition, we’re going to show how to extend the platform by adding Kali Linux.
 
 [TOC]
 
@@ -10,7 +10,7 @@ Cisco Modeling Labs (CML) is the go-to tool for the simulation of virtual Cisco 
 
 - Installation and licensing of the product (demo)
 - Cockpit – system management, enabling SSH to access the Linux CLI
-- Simulation Life cycle  (simulation state, creating a topology, working with the UI, hands-on)
+- Simulation Life cycle (simulation state, creating a topology, working with the UI)
 - Installation of 3rd Party Image (node and image definition creation, image upload)
 - Exploring and using the API via Swagger
 - Use of the Python Client Library (PCL)
@@ -27,7 +27,7 @@ A modern Web browser (Chrome / Firefox / Brave / Edge / Safari / ... ) is requir
 
 >  **Important** To access Cisco dCloud, each user must have a valid Cisco CCO ID. Otherwise, no access is possible.
 
-A link will be provided during the WebEx session which will assign each attendee a dCloud lab (limited seats available). When accessing this link, a page like this will be shown:
+A link will be provided during the WebEx session which will assign each attendee a dCloud lab (limited seats available. First come, first serve). When accessing this link, a page like this will be shown:
 
 ![image-20230706133042967](./resources/image-20230706133042967.png)
 
@@ -39,15 +39,15 @@ Refer to the appendix in case you want to repeat this workshop on your own hardw
 
 ### Installation and licensing (demo)
 
-Installation is done either as a virtual machine (preferred) or on a bare metal server. The VM requires an OVA to be deployed, for the bare metal install an ISO image is used to boot the server and install from there.
+Installation is done either as a virtual machine (preferred) or on a bare metal server. The VM requires an OVA to be deployed. For the bare metal install an ISO image is used to boot the server and install from there.
 
-Once the OVA is deployed, the text based installer is started. It will ask a few questions about usernames, passwords, interfaces etc.
+Once the OVA is deployed and the VM is started, the text based installer is launched. It will ask a few questions about user names, passwords, interfaces etc.
 
 In addition, it is also determined whether CML should be deployed as an "all in one" or as a "cluster". Cluster deployments require two NICs per cluster member (controller and computes).
 
 Part of the installation is also the copying of the so-called "reference platform ISO" with disk images to the hard drive of the controller. This is the part that takes the most time. Overall, the entire installation takes roughly 10-15 minutes.
 
-Next, a license must be applied. This is done via the CML Web UI. The address to connect to is displayed on the screen of the machine when the installer has finished.
+Next, a license must be applied. This is done via the CML Web UI. The address is displayed on the screen of the machine when the installer has finished.
 
 The licensing requires connectivity to the Internet to validate the license token. The token is generated via the software licensing center at https://software.cisco.com. It's a single string that can be copied and pasted into the Web UI. For enterprise licenses, additional node licenses can be configured, the standard license includes 20 Cisco node licenses.
 
@@ -84,20 +84,22 @@ You should now be able to log into the CML host using SSH and get access to the 
 
 ![image-20230706164243076](./resources/image-20230706164243076.png)
 
+> **Note** The dCloud CML variant has SSH enabled by default.
+
 This concludes the Cockpit section.
 
 ### Simulation life-cycle
 
-This section simply teaches the user to navigate the UI. The various sections to explore are:
+This section simply teaches the user how to navigate the UI. The various sections to explore are:
 
 - dashboard. where all labs are displayed either as tiles or in a list
-- we can import labs shared with us from here by pressing the "Import" button
-- we can add new labs by pressing the "Add" button
-- Actions on lab tiles include start, stop, wipe and delete
+- shared labs can be imported here by pressing the "Import" button
+- new labs can be added by pressing the "Add" button
+- actions on lab tiles include start, stop, wipe and delete
 
-When adding a lab or opening an existing lab, the lab editor is shown. This is the "heart" of the Web UI. Things to do here are
+When adding a lab or opening an existing lab, the app opens the lab editor. This is the "heart" of the Web UI. Things to do here are
 
-- editing a topology by adding nodes and links. Nodes can be dragged from the palette on the right and then drop onto the canvas. Links can be added by right-clicking a node and selecting "Add link"
+- editing a topology by adding nodes and links. Nodes can be dragged from the palette on the right and then dropped onto the canvas. Links can be added by right-clicking a node and selecting "Add link"
 - configurations can be edited on "wiped" nodes
 - nodes can be interacted with via the console or VNC tab (where available)
 - on links, traffic conditions like delay or loss can be dialed in or a packet capture can be started
@@ -112,9 +114,9 @@ This concludes the Simulation life-cycle section.
 
 We're going to install a Kali cloud image as a custom image into CML. The Kali image is ~170 MB in size and is provided as a cloud-image which can be installed in CML "as-is". The image is available [here](https://www.kali.org/get-kali/#kali-cloud).
 
-#### Kali Image download and conversion
+#### Kali Image download and disk conversion
 
-Execute these commands on the CML controller's command line by either using the Cockpit terminal or by using PuTTY to log into CML. Remember that the user name is "sysadmin" and the port to connect to is 1122!
+Execute these commands on the CML controller's command line by either using the Cockpit terminal or by using PuTTY to log into CML. Remember that the user name is `sysadmin` and the port to connect to is `1122`. The password is `C1sco012345`.
 
 These commands don't require privileges, they can be run by the sysadmin user. We use cURL to download the image from the web.
 
@@ -154,7 +156,7 @@ Format specific information:
 $
 ```
 
-This file is now moved into the "dropfolder". The dropfolder is the location where the CML controller expects new images. This is the same location where files will show up when uploading through the UI or via SCP on port TCP/22 to the controller.
+This file is now moved into the "dropfolder". The dropfolder is the location where the CML controller looks for new images. This is the same location where files will show up when uploaded through the UI or via SCP on port TCP/22 to the controller.
 
 ```
 $ sudo cp kali.qcow2 /var/local/virl2/dropfolder
@@ -168,9 +170,9 @@ We have to copy and can not move the file as the home directory and the VIRL2 di
 To make the image we've just created available in CML, we need to go through a couple of steps:
 
 - Upload the disk image to the controller. This can be done either via the UI or via SCP. For larger images, the upload via SCP is recommended (this is already done as part of the previous steps)
-- Create an image definition for the uploaded image
 - Create a node definition for the new node type
-- Link the image definition to the node definition
+- Create an image definition for the uploaded image
+- Link the image definition to the node definition by referencing the node definition ID within the image definition
 
 ##### Create the node definition
 
@@ -179,12 +181,12 @@ To make the image we've just created available in CML, we need to go through a c
 - Click the "Add" button
   ![image-20230706165044978](./resources/image-20230706165044978.png)
 
-Filling the form is a bit tedious, so here's just a quick summary what should go into the fields:
+Filling the form is a bit tedious, so here's a quick summary what should go into the fields:
 
 - ID should be "kali"
 - Description whatever you want
 - Nature is "server"
-- image definition is left blank for the moment
+- Image definition is left blank for the moment
 - User interface
   - "visible" is on
   - Description is whatever you want
@@ -198,7 +200,7 @@ Filling the form is a bit tedious, so here's just a quick summary what should go
   - CPUs to 1
   - CPU limit to 100
   - Network driver is "virtio"
-  - Boot Disk size is 16 (GB). Make sure that the size here is at least as big as the size reported by the Qemu image tool (see above)
+  - Boot Disk size is 16 (GB). Make sure that the size here is at least as big as the size reported by the Qemu image tool (see above, the virtual size was reported as 12 GB)
   - Video model is "Cirrus"
   - Video memory us set to "64"
 - Interfaces
@@ -208,29 +210,30 @@ Filling the form is a bit tedious, so here's just a quick summary what should go
   - add four interfaces and name them eth0, eth1, eth2 and eth3
 - Boot
   - set timeout to 120
+  - no specific boot line required, defaults should be fine
 - pyATS is disabled
 - Property inheritance is unchanged (all on)
 - Configuration generator is deselected (can't generate configurations for Kali)
 - Provisioning is "off"
 
-The click the "Create" button -- if anything is missing then the form will report it, otherwise things can still be changed after creation.
+Then click the "Create" button -- if anything is missing then the form will report it, otherwise things can still be changed after creation.
 
 ##### Create the image definition
 
 - Navigate to Tools ➡ Node and Image Definitions
 - Ensure the "Image definition" tab is selected
 - Click the "Add" button
-- ID is "kali-6-1-0" or similar (needs to be unique)
+- ID is "kali-6-1-0" or similar (needs to be unique and should consider the fact that a newer image version might be added in the future)
 - Label is "Kali 6.1.0"
-- Description whatever you like
-- Select the disk image that we put into the drop folder `kali.qcow2`
-- Select the associated "kali" Node definition from the drop down
+- Description is whatever you like
+- Select the disk image from the drop down list that we put into the drop folder `kali.qcow2`
+- Select the associated "kali" Node definition from the drop down list
 
 Leave the rest as-is and click the "Create" button. This finalizes the new Kali node and image definition.
 
 ##### Create a new Kali node
 
-We can now either create a new Kali lab or add a Kali node to an existing lab. After linking it to an external connector via an unmanaged switch it will happily boot and acquire an IP address:
+We can now either create a new Kali lab or add a Kali node to an existing lab. After linking it to an external connector via an unmanaged switch it will happily boot and acquire an IP address (ensure the external connector configuration uses the NAT bridge):
 
 ![image-20230706175553014](./resources/image-20230706175553014.png)
 
@@ -242,6 +245,7 @@ For other operating systems, some experimentation is required...
 - what NIC types are supported?
 - do we need a graphics adapter or not? Which one? How much memory?
 - Is additional storage / a data disk required?
+- what needs to be done to get a serial console (if any at all)
 - and potentially more...
 
 In some cases (like with Windows 11) some virtual hardware might be needed which isn't currently available on CML (in this case, the TPM).
@@ -285,9 +289,9 @@ We'll check now via `pip list` what Python packages are already installed. In th
 
 If the PCL is not installed, then a simple `pip install virl2-client` will do. 
 
-> **Note** The latest dCloud CML environment has the correct version already installed.
+> **Note** the latest dCloud CML environment has the correct version already installed.
 
-The documentation for the PCL is built into the CML controller and can be opened by navigating to Tools ➡ Client Library which opens a new tab:
+The documentation for the PCL is built into the CML controller and can be opened by navigating to Tools ➡ Client Library which opens a new tab.
 
 ![image-20230706083000213](./resources/image-20230706083000213.png)
 
@@ -321,7 +325,9 @@ This concludes the PCL section.
 
 ### virl-utils: taking the PCL to the next level
 
-virl-utils is a tool written in Python and available on GitHub and PyPI. It is modeled after the "vagrant up" tool from Hashicorp and uses the PCL extensively. In fact, since it's available on GitHub, you can study it as a good example how to use the PCL.
+virl-utils is a tool written in Python and available on GitHub and PyPI. It is inspired by Vagrant tool from Hashicorp and uses the PCL extensively. In fact, since it's available on GitHub, you can study it as a good example how to use the PCL.
+
+The basic idea is to put a topology file and a configuration file into a directory and then do a `virl up` to start the lab. After testing, a `virl down` will stop the lab again.
 
 virl-utils can be easily installed via pip. At the command prompt run `pip install virlutils` (note there's no dash!), it might pull in a couple of dependencies:
 
@@ -363,7 +369,7 @@ The breakout tool allows to use native tools like PuTTY or VNC clients to connec
 
 It is available on the controller to download for Windows, Linux and macOS (Apple Silicon and Intel variants available).
 
-The breakout tool is already installed on the dCloud Windows machine, but it's not the current version. We can download the current version from the controller by navigating to *Tools* ➡ *Breakout Tool*. Then download the Windows version:
+The breakout tool is already installed on the dCloud Windows machine, but it might not be the current version. We can download the current version from the controller by navigating to *Tools* ➡ *Breakout Tool*. Then download the Windows version:
 
 ![image-20230706090343819](./resources/image-20230706090343819.png)
 
@@ -375,10 +381,10 @@ Next, we need to verify the configuration. If nothing has been pre-configured th
 
 - run "config" -- `breakout config` to create a template configuration file
 
-- edit the configuration file to match your controller address, username and password using `notepad config.yaml`, don't forget to save the file. The controller address is `https://cml.demo.dcloud.cisco.com`. **Ensure that there is no trailing slash!** Change the listen address to `localhost`. It should look like this:
+- edit the configuration file to match your controller address, username and password using `notepad config.yaml`, don't forget to save the file. The controller address is `https://cml` in dCloud. **Ensure that there is no trailing slash!** Change the listen address to `localhost`. It should look like this:
   ``` 
   console_start_port: 9000
-  controller: https://cml.demo.dcloud.cisco.com
+  controller: https://cml
   extra_lf: false
   lab_config_name: labs.yaml
   listen_address: localhost
@@ -400,7 +406,7 @@ Next, we need to verify the configuration. If nothing has been pre-configured th
 - run "run" -- `breakout run` to actually run the tool and make the ports available
   ![image-20230706114544952](./resources/image-20230706114544952.png)
 
-- use your native clients to connect to the ports displayed
+- use your native clients to connect to the ports displayed, there's PuTTY and UltraVNC available
   
 
 Alternatively, most of these steps can also be done via the convenient "breakout UI" which is available when running `breakout ui`. When running the UI, point your browser to the address displayed in the command prompt:
@@ -409,13 +415,15 @@ Alternatively, most of these steps can also be done via the convenient "breakout
 Running... Serving UI/API on http://localhost:8080, Ctrl-C to stop.
 ```
 
-The "listening address" and port (here localhost and 8080) can be changed in the `config.yaml` or in the UI itself. Note, that changes to those parameters require a restart of the tool.
+The "listening address" and port (here localhost and 8080) can be changed in the `config.yaml` or in the UI itself. 
+
+> **Note** changes to those parameters require a restart of the tool
 
 This concludes the breakout section.
 
 ### Terminal Server
 
-The built-in terminal server of CML allows secure and authenticated access to otherwise non-authenticated and plain text consoles of virtual network devices.
+The built-in terminal server of CML allows secure and authenticated access to otherwise non-authenticated and plain text serial consoles of virtual network devices.
 
 CML uses SSH on the standard SSH port TCP/22 to provide either a menu or, for advanced use cases, direct access to individual consoles of devices. The CML terminal server replaces the standard SSH server of the underlying OS. The OS SSH server is disabled by default. When enabled via Cockpit (as shown in one of the previous sections) the OS SSH server listens on TCP/1122.
 
@@ -423,7 +431,7 @@ Use the PuTTY client on Windows and point it to the CML controller:
 
 ![image-20230706122945194](./resources/image-20230706122945194.png)
 
-Enter the hostname (cml-controller works here) and leave SSH selected for the connection type. Click "Open" (you might get a warning with the fingerprints of the host to confirm).
+Enter the hostname (cml-controller works here) and leave SSH selected for the connection type. Click "Open" (you might get a warning about the key fingerprints of the host that needs to be confirmed).
 
 ![image-20230706123118679](./resources/image-20230706123118679.png)
 
@@ -439,7 +447,7 @@ The terminal server also allows direct access to device consoles, omitting the m
 
 The important piece here is to pass the "-t" flag to the SSH client. This requests a TTY for the session and is mandatory to get an interactive prompt. Note that the `open /test/alpine-0/0` is identical to the command that is executed in interactive mode above.
 
-The same procedure is also possible wit e.g. PutTTY but it's easier and conciser to demonstrate with the OpenSSH command line client.
+The same procedure is also possible with e.g. PuTTY but it's easier and conciser to demonstrate with the OpenSSH command line client.
 
 This concludes the terminal server section.
 
@@ -460,7 +468,7 @@ Microsoft used to provide Edge Developer VMs based on Windows 10. These have bee
 
 #### Virtual WLC
 
-As an alternative, you can also install the virtual Wireless LAN Controller from [CCO here](https://software.cisco.com/download/home/284464214/type/280926587), choose the OVA ~620MB, "Cisco Wireless LAN Small Scale Virtual Controller Installation with 60 day evaluation license". The process is slightly different as we need to "pre-install" the operating system.
+As an alternative for the custom image, you can also install the virtual Wireless LAN Controller from [CCO here](https://software.cisco.com/download/home/284464214/type/280926587), choose the OVA ~620MB, "Cisco Wireless LAN Small Scale Virtual Controller Installation with 60 day evaluation license". The process is slightly different as we need to "pre-install" the operating system.
 
 ![image-20230706081142131](./resources/image-20230706081142131.png)
 
@@ -473,9 +481,9 @@ The vWLC building process is slightly different as the disk image finally deploy
 >
 > It sometimes might be a good idea to install the desired OS inside of VMware Workstation or VirtualBox and, when done, convert the resulting disk into QCOW2 format.
 
-These steps are for reference and can be done on the CML controller itself.  Or on any Linux host that has the Qemu packages installed.
+These steps are for reference and can be done on the CML controller itself. Or on any Linux host that has the Qemu packages installed.
 
-When using the `-curses` parameter the console of the VM will be in the terminal... However, to kill/end the VM you need to get into another terminal and kill the process.  Without `-curses` and with a UI (like on the Mac or on a Linux with UI / Desktop) one can simply close the Qemu window.
+When using the `-curses` parameter the console of the VM will be in the terminal... However, to kill/end the VM you need to get into another terminal and kill the process. Without `-curses` and with a UI (like on the Mac or on a Linux with UI / Desktop) one can simply close the Qemu window.
 
 ```
 $ mkdir build
@@ -489,7 +497,7 @@ x VmMgmtNetwork.xml
 x VmSpNetwork.xml
 $ qemu-img convert -pc -Oqcow2 AS_CTVM_SMALL_8_10_151_0.vmdk AS_CTVM_SMALL_8_10_151_0.qcow2
     (100.00/100%)
-$ qemu-system-x86_64 -curses -accel hvf -m 2048 -cdrom AS_CTVM_SMALL_8_10_151_0.iso -hda AS_CTVM_SMALL_8_10_151_0.qcow2
+$ qemu-system-x86_64 -curses -accel kvm -m 2048 -cdrom AS_CTVM_SMALL_8_10_151_0.iso -hda AS_CTVM_SMALL_8_10_151_0.qcow2
 qemu-system-x86_64: warning: host doesn't support requested feature: CPUID.80000001H:ECX.svm [bit 2]
 $ ls -lh
 total 4130984
@@ -509,34 +517,34 @@ total 2234368
 $
 ```
 
-This can be used to test the image.  It will create a linked clone of the disk named `test-disk.qcow2` and start a VM... You should see output on the screen...  You can also `telnet 127.0.0.1 4444` to get access to the serial console.  Same caveat regarding closing the VM applies (see above).
+This can be used to test the image. It will create a linked clone of the disk named `test-disk.qcow2` and start a VM... You should see output on the screen... You can also `telnet 127.0.0.1 4444` to get access to the serial console. Same caveat regarding closing the VM applies (see above).
 
 ```
 $ qemu-img create -b vwlc-disk.qcow2 -fqcow2 test-disk.qcow2
 $ qemu-system-x86_64 -curses -accel hvf -m 2048 -hda test-disk.qcow2 -serial telnet:127.0.0.1:4444,server,nowait -device e1000
 ```
 
-### Running  your own instance
+### Running your own instance
 
 #### Hardware
 
-You need a computer to run CML on.  A somewhat recent laptop should be sufficient to get you up-and-running.  As laptop are somewhat limited in available resources, but they should be sufficient to learn the basics and to get a better understanding how to install and run CML on larger computers
+You need a computer to run CML on. A somewhat recent laptop should be sufficient to get you up-and-running. As laptop are somewhat limited in available resources, but they should be sufficient to learn the basics and to get a better understanding how to install and run CML on larger computers.
 
 - **Memory:** At least 16GB of memory, 8 or 10GB should be dedicated to the CML Virtual Machine
 - **CPU:** the more, the merrier… 4 vCPUs / threads should be assigned to the CML Virtual Machine
 - **Disk Space:** At least 8GB of free disk space required, more is better especially if you want to install additional images like Windows 10… For Windows 10, you should set at least 16GB of free space aside.
 
-Recommendation:  Use a USB 3.0 portable hard drive to store the images and install the software on.
+Recommendation: Use a USB 3.0 portable hard drive to store the images and install the software on.
 
 #### License
 
-To run the software, you also need a license.  Personal or Personal plus licenses can be bought via the [Cisco Learning Network Store](https://learningnetworkstore.cisco.com/cisco-modeling-labs-personal).
+To run the software, you also need a license. Personal or Personal plus licenses can be bought via the [Cisco Learning Network Store](https://learningnetworkstore.cisco.com/cisco-modeling-labs-personal).
 
 #### Software
 
 ##### VMware Workstation
 
-CML comes as an OVA to be deployed on VMware products.  To run CML, you need to have a hypervisor installed. On Windows and Linux, VMware Workstation can be used. Unfortunately, running CML on Apple hardware is only possible with Intel architecture,  Apple Silicon models can't run CML!  Alternatively, you can run on VMware ESXi 6.7 or later as well if you have access to such infrastructure.
+CML comes as an OVA to be deployed on VMware products. To run CML, you need to have a hypervisor installed. On Windows and Linux, VMware Workstation can be used. Unfortunately, running CML on Apple hardware is only possible with Intel architecture, Apple Silicon models can't run CML! Alternatively, you can run on VMware ESXi 6.7 or later as well if you have access to such infrastructure.
 
 You should also be OK to use a trial license for Workstation or use VMware Player, if available on your platform.
 
