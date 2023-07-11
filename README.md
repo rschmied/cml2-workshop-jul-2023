@@ -4,7 +4,7 @@
 
 Cisco Modeling Labs (CML) is the go-to tool for the simulation of virtual Cisco network devices and beyond. In this workshop, we’re going to cover the product from A to Z with a special focus on automation. In addition, we’re going to show how to extend the platform by adding Kali Linux.
 
-- [TOC]
+[TOC]
 
 ## Agenda
 
