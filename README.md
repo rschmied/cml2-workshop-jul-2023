@@ -338,7 +338,7 @@ After the installation has succeeded, the `virl` command is available:
 
 ![image-20230706085018677](./resources/image-20230706085018677.png)
 
-After installation, the tool must be configured, the documentation is [available here](https://github.com/CiscoDevNet/virlutils#configuration). For this demo, we simply copy and change the user name from `demo` to `admin` in the `.virlrc` file that was already there.  Also ensure that the `VIRL_HOST` is set to `cml`. With a command prompt open in the Administrator's home directory `C:\Users\Administrator`, the file can be edited by running `notepad .virlrc`:
+After installation, the tool must be configured. Please refer to documentation [available here](https://github.com/CiscoDevNet/virlutils#configuration). For this demo, we simply copy and change the user name from `demo` to `admin` in the `.virlrc` file that was already there.  Also ensure that the `VIRL_HOST` is set to `cml`. With a command prompt open in the Administrator's home directory `C:\Users\Administrator`, the file can be edited by running `notepad .virlrc`:
 
 ![image-20230707160041094](./resources/image-20230707160041094.png)
 
