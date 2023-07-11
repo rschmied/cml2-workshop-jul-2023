@@ -4,7 +4,7 @@
 
 Cisco Modeling Labs (CML) is the go-to tool for the simulation of virtual Cisco network devices and beyond. In this workshop, we’re going to cover the product from A to Z with a special focus on automation. In addition, we’re going to show how to extend the platform by adding Kali Linux.
 
-
+- [TOC]
 
 ## Agenda
 
@@ -366,7 +366,7 @@ This concludes the virl-utils section.
 
 ### Breakout tool
 
-The breakout tool allows tools like PuTTY or VNC clients to connect to node consoles or graphical user interfaces.
+The breakout tool allows to use native tools like PuTTY or VNC clients to connect to node consoles or graphical user interfaces.
 
 It is available on the controller to download for Windows, Linux and macOS (Apple Silicon and Intel variants available).
 
@@ -408,7 +408,8 @@ Next, we need to verify the configuration. If nothing has been pre-configured th
   ![image-20230706114544952](./resources/image-20230706114544952.png)
 
 - use your native clients to connect to the ports displayed, there's PuTTY and UltraVNC available. 
-> **Note** to access `serial0` on the machine you need to use `telnet` to the defined port above
+
+> **Note** when using PuTTY, ensure that the connection type is Telnet, not SSH to access `serial0` on the machine
   
 
 Alternatively, most of these steps can also be done via the convenient "breakout UI" which is available when running `breakout ui`. When running the UI, point your browser to the address displayed in the command prompt:
