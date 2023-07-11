@@ -102,7 +102,7 @@ When adding a lab or opening an existing lab, the app opens the lab editor. This
 - Editing a topology by adding nodes and links. Nodes can be dragged from the palette on the right and then dropped onto the canvas. Links can be added by right-clicking a node and selecting "Add link"
 - Configurations can be edited on "wiped" nodes
 - Nodes can be interacted with via the console or VNC tab (where available)
-- Traffic conditions on links like delay or packer loss can be invoked or a packet capture can be started
+- Traffic conditions on links like delay or packet loss can be invoked or a packet capture can be started
 - Annotations (ellipses, rectangles, lines, arrows, text) can be added and edited
 - Various display options can be toggled
 
@@ -116,9 +116,9 @@ We're going to install a Kali cloud image as a custom image into CML. The Kali i
 
 #### Kali Image download and disk conversion
 
-Execute these commands on the CML controller's command line by either using the Cockpit terminal or by using PuTTY to log into CML. Remember that the user name is `sysadmin` and the port to connect to is `1122`. The password is `C1sco012345`.
+Execute these commands on the CML controller's command line by either using the Cockpit terminal or by using PuTTY to log into CML. Remember that the username is `sysadmin` and the port to connect to is `1122`. The password is `C1sco012345`.
 
-These commands don't require privileges, they can be run by the sysadmin user. We use cURL to download the image from the web.
+These commands don't require privileges; they can be run by the sysadmin user. We use `cURL` to download the image from the web.
 
 ```plain
 $ curl -LO https://kali.download/cloud-images/kali-2023.2/kali-linux-2023.2-cloud-genericcloud-amd64.tar.xz
@@ -163,7 +163,7 @@ $ sudo cp kali.qcow2 /var/local/virl2/dropfolder
 $ rm kali.qcow2
 ```
 
-We have to copy and can not move the file as the home directory and the VIRL2 directory usually are on different file systems. On the dCloud instance, `mv` works as well.
+We have to copy and cannot move the file as the home directory and the VIRL2 directory usually are on different file systems. On the dCloud instance, `mv` works as well.
 
 #### Steps to create a custom image
 
@@ -278,7 +278,7 @@ The PCL is available for download from the controller or on PyPI (Python package
 
 ![Screenshot from 2023-07-06 12-07-31](./resources/image-20230706120731000.png)
 
-Running the Commmand Prompt as an *administrator*  is important for some commands that needs a higher privilege permission . Note that this will start the shell in the Windows system directory. Change the working directory to the Administrator's home directory using:
+Running the Command Prompt as an *administrator*  is important for some commands that needs a higher privilege permission . Note that this will start the shell in the Windows system directory. Change the working directory to the Administrator's home directory using:
 
 ```
 cd C:\Users\Administrator
@@ -366,7 +366,7 @@ This concludes the virl-utils section.
 
 ### Breakout tool
 
-The breakout tool allows totive tools like PuTTY or VNC clients to connect to node consoles or graphical user interfaces.
+The breakout tool allows tools like PuTTY or VNC clients to connect to node consoles or graphical user interfaces.
 
 It is available on the controller to download for Windows, Linux and macOS (Apple Silicon and Intel variants available).
 
@@ -449,7 +449,7 @@ The terminal server also allows direct access to device consoles, omitting the m
 
 The important piece here is to pass the `-t` flag to the SSH client. This requests a TTY for the session and is mandatory to get an interactive prompt. Note that the `open /test/alpine-0/0` is identical to the command that is executed in interactive mode above.
 
-The same procedure is also possible with e.g. PuTTY but it's easier and conciser to demonstrate with the OpenSSH command line client.
+The same procedure is also possible with e.g. PuTTY but it's easier and concise to demonstrate with the OpenSSH command line client.
 
 This concludes the terminal server section.
 
@@ -481,7 +481,7 @@ As an alternative for the custom image, you can also install the virtual Wireles
 
 The vWLC building process is slightly different as the disk image finally deployed on CML must be created and the OS installed on it first. This is a common scenario where install media is provided which needs to be installed on a disk. For this reason, the steps here include the creation of a stand-alone VM using Qemu/KVM and, as a result of this process, obtain a disk file which then can be used inside of CML.
 
->  **Note** this might or might not work depending on the OS and what the installation process creates on the target disk. There's typically some "cleanup" required at the end of such an installation to allow the "cloning" of machines created from such a disk image.
+>  **Note** this might or might not work depending on the OS and what the installation process creates on the target disk. There's typically some "clean-up" required at the end of such an installation to allow the "cloning" of machines created from such a disk image.
 >
 > It sometimes might be a good idea to install the desired OS inside of VMware Workstation or VirtualBox and, when done, convert the resulting disk into QCOW2 format.
 
@@ -561,4 +561,5 @@ https://software.cisco.com/download/home/286193282/type/286326381
 Download the OVA and the reference platform ISO file (here, the 2.5.1 version is shown):
 
 ![image-20230706072246252](./resources/image-20230706072246252.png)
+
 
