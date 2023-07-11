@@ -4,7 +4,7 @@
 
 Cisco Modeling Labs (CML) is the go-to tool for the simulation of virtual Cisco network devices and beyond. In this workshop, we’re going to cover the product from A to Z with a special focus on automation. In addition, we’re going to show how to extend the platform by adding Kali Linux.
 
-[TOC]
+
 
 ## Agenda
 
@@ -55,9 +55,9 @@ The licensing requires connectivity to the Internet to validate the license toke
 
 Certain system maintenance tasks are done via Cockpit, the built-in system admin tool. This includes:
 
-- adding and configuring additional network interface cards (NICs)
-- a command line terminal 
-- service management
+- Adding and configuring additional network interface cards (NICs)
+- Command line terminal 
+- Service Management
 
 In addition, a custom CML plugin allows for additional, CML specific tasks.
 
@@ -80,7 +80,7 @@ Then click that table row, on the new page enable the service by clicking the "o
 
 ![image-20230706131012210](./resources/image-20230706131012210.png)
 
-You should now be able to log into the CML host using SSH and get access to the command line:
+You should now be able to log into the CML host using SSH (using port `1122` as shown below) and get access to the command line:
 
 ![image-20230706164243076](./resources/image-20230706164243076.png)
 
@@ -92,19 +92,19 @@ This concludes the Cockpit section.
 
 This section simply teaches the user how to navigate the UI. The various sections to explore are:
 
-- dashboard. where all labs are displayed either as tiles or in a list
-- shared labs can be imported here by pressing the "Import" button
-- new labs can be added by pressing the "Add" button
-- actions on lab tiles include start, stop, wipe and delete
+- Dashboard. where all labs are displayed either as tiles or in a list
+- Shared labs can be imported here by pressing the "Import" button
+- New labs can be added by pressing the "Add" button
+- Actions on lab tiles include start, stop, wipe and delete
 
 When adding a lab or opening an existing lab, the app opens the lab editor. This is the "heart" of the Web UI. Things to do here are
 
-- editing a topology by adding nodes and links. Nodes can be dragged from the palette on the right and then dropped onto the canvas. Links can be added by right-clicking a node and selecting "Add link"
-- configurations can be edited on "wiped" nodes
-- nodes can be interacted with via the console or VNC tab (where available)
-- on links, traffic conditions like delay or loss can be dialed in or a packet capture can be started
-- annotations (ellipses, rectangles, lines, arrows, text) can be added and edited
-- various display options can be toggled
+- Editing a topology by adding nodes and links. Nodes can be dragged from the palette on the right and then dropped onto the canvas. Links can be added by right-clicking a node and selecting "Add link"
+- Configurations can be edited on "wiped" nodes
+- Nodes can be interacted with via the console or VNC tab (where available)
+- Traffic conditions on links like delay or packer loss can be invoked or a packet capture can be started
+- Annotations (ellipses, rectangles, lines, arrows, text) can be added and edited
+- Various display options can be toggled
 
 Options / tabs on the bottom panel change depending on what kind of topology element is selected.
 
@@ -156,7 +156,7 @@ Format specific information:
 $
 ```
 
-This file is now moved into the "dropfolder". The dropfolder is the location where the CML controller looks for new images. This is the same location where files will show up when uploaded through the UI or via SCP on port TCP/22 to the controller.
+We now move the file into the "dropfolder". The dropfolder is the location where the CML controller looks for new images. This is the same location where files will show up when it is uploaded through the UI or via SCP on port TCP/22 to the controller.
 
 ```
 $ sudo cp kali.qcow2 /var/local/virl2/dropfolder
@@ -195,7 +195,8 @@ Filling the form is a bit tedious, so here's a quick summary what should go into
   - Label is "kali"
 - Linux Native Simulation
   - Domain driver is "KVM"
-  - Disk Driver is "virtio"
+  - Simulation driver is "server"
+  - Disk Driver is "Virtio"
   - Set Memory to 512
   - CPUs to 1
   - CPU limit to 100
@@ -226,10 +227,10 @@ Then click the "Create" button -- if anything is missing then the form will repo
 - ID is "kali-6-1-0" or similar (needs to be unique and should consider the fact that a newer image version might be added in the future)
 - Label is "Kali 6.1.0"
 - Description is whatever you like
-- Select the disk image from the drop down list that we put into the drop folder `kali.qcow2`
+- Select the disk image from the drop-down list that we put into the drop folder `kali.qcow2`
 - Select the associated "kali" Node definition from the drop down list
 
-Leave the rest as-is and click the "Create" button. This finalizes the new Kali node and image definition.
+Leave the rest as-is and click the **Create Image Definition** button. This finalizes the new Kali node and image definition.
 
 ##### Create a new Kali node
 
@@ -252,9 +253,9 @@ In some cases (like with Windows 11) some virtual hardware might be needed which
 
 This concludes the third party image section.
 
-### Exploring and using the API via Swagger
+### Exploring and using the CML API via Swagger
 
-CML includes complete API documentation. It has a convenient front end called "Swagger" which not only shows all the details of the API including data schema but also allows to run API calls and immediately see the results, typically in JSON.
+CML includes a complete API documentation. It has a convenient frontend called "Swagger" which not only shows all the details of the API including data schema but also allows to run API calls and immediately see the results, typically in a JSON format.
 
 From the CML UI, navigate to *Tools* ➡ *API Documentation*. Note that the pad lock is closed which means that the API browser is already "authorized". If the lock is open then the API browser isn't authorized and a proper token must be provided using the authentication API endpoint.
 
@@ -262,12 +263,12 @@ From the CML UI, navigate to *Tools* ➡ *API Documentation*. Note that the pad 
 
 Experiment with various API calls like:
 
-- acquire an authentication token
-- list all labs
-- list nodes of a lab
-- start or stop a lab
-- check system health
-- list known node definitions
+- Acquire an authentication token
+- List all labs
+- List nodes of a lab
+- Start or stop a lab
+- Check system health
+- List known node definitions
 
 This concludes the API via Swagger section.
 
@@ -277,13 +278,13 @@ The PCL is available for download from the controller or on PyPI (Python package
 
 ![Screenshot from 2023-07-06 12-07-31](./resources/image-20230706120731000.png)
 
-The *administrator* bit is important to make some commands work later on. Note that this will start the shell in the Windows system directory. Change the working directory to the Administrator's home directory using:
+Running the Commmand Prompt as an *administrator*  is important for some commands that needs a higher privilege permission . Note that this will start the shell in the Windows system directory. Change the working directory to the Administrator's home directory using:
 
 ```
 cd C:\Users\Administrator
 ```
 
-We'll check now via `pip list` what Python packages are already installed. In this case, the virl2-client (Python Client Library / PCL) is already there but it is outdated (see the output below). We're going to upgrade it to the latest version via `pip install --upgrade virl2-client`:
+We'll check now via `pip list` what Python packages are already installed. In this case, the `virl2-client` (Python Client Library / PCL) is already there but it is outdated (see the output below). We're going to upgrade it to the latest version via `pip install --upgrade virl2-client`:
 
 ![image-20230706084114426](./resources/image-20230706084114426.png)
 
@@ -297,9 +298,9 @@ The documentation for the PCL is built into the CML controller and can be opened
 
 The documentation has a couple of examples to work through:
 
-- create a lab with nodes and links
-- stopping all labs
-- getting all lab names
+- Create a lab with nodes and links
+- Stopping all labs
+- Getting all lab names
 
 You can copy and paste these examples into a file (via Notepad, for example) and run them via the command line like this:
 
@@ -347,9 +348,9 @@ Don't forget to save the file!
 
 After the tool is configured OK, we can use the various sub commands of the `virl` command like
 
-- list labs via `ls`
-- open consoles into nodes
-- start / stop / wipe / remove a lab
+- List labs via `virl ls`
+- Open consoles into nodes
+- Start / stop / wipe / remove a lab
 
 The tool uses the concept of a "current lab". The current lab is automatically set when starting it via `virl up`. You might have started a lab already using the UI or via previous exercises. In this case you can do
 
@@ -365,7 +366,7 @@ This concludes the virl-utils section.
 
 ### Breakout tool
 
-The breakout tool allows to use native tools like PuTTY or VNC clients to connect to node consoles or graphical user interfaces.
+The breakout tool allows totive tools like PuTTY or VNC clients to connect to node consoles or graphical user interfaces.
 
 It is available on the controller to download for Windows, Linux and macOS (Apple Silicon and Intel variants available).
 
@@ -379,7 +380,7 @@ Copy the file into the current directory, renaming it to `breakout.exe`:
 
 Next, we need to verify the configuration. If nothing has been pre-configured then the steps are:
 
-- run "config" -- `breakout config` to create a template configuration file
+- run `breakout.exe config` to create a template configuration file for the breakout tool
 
 - edit the configuration file to match your controller address, username and password using `notepad config.yaml`, don't forget to save the file. The controller address is `https://cml` in dCloud. **Ensure that there is no trailing slash!** Change the listen address to `localhost`. It should look like this:
   ``` 
@@ -396,17 +397,18 @@ Next, we need to verify the configuration. If nothing has been pre-configured th
   vnc_start_port: 5900
   ```
 
-- start a lab (in case none is running at the moment). To use VNC, have at least one Desktop node running in a lab
+- Start a lab (in case none is running at the moment). To use VNC, have at least one Desktop node running in a lab
 
-- run "init" -- `breakout init` to download information about running labs from the controller
+- run `breakout init` to download information about running labs from the controller
 
-- edit the created `labs.yaml` file and set the `enabled` flag to `true` for the labs you want to use. Note that if multiple labs are enabled, you need to ensure that there's no conflict in the ports being used.
+- Edit the created `labs.yaml` file and set the `enabled` flag to `true` for the labs you want to use. Note that if multiple labs are enabled, you need to ensure that there's no conflict in the ports being used.
   ![image-20230706114455254](./resources/image-20230706114455254.png)
 
-- run "run" -- `breakout run` to actually run the tool and make the ports available
+- Type `breakout run` to actually run the tool and make the ports available
   ![image-20230706114544952](./resources/image-20230706114544952.png)
 
-- use your native clients to connect to the ports displayed, there's PuTTY and UltraVNC available
+- use your native clients to connect to the ports displayed, there's PuTTY and UltraVNC available. 
+> **Note** to access `serial0` on the machine you need to use `telnet` to the defined port above
   
 
 Alternatively, most of these steps can also be done via the convenient "breakout UI" which is available when running `breakout ui`. When running the UI, point your browser to the address displayed in the command prompt:
@@ -445,7 +447,7 @@ The terminal server also allows direct access to device consoles, omitting the m
 
 ![image-20230706123920768](./resources/image-20230706123920768.png)
 
-The important piece here is to pass the "-t" flag to the SSH client. This requests a TTY for the session and is mandatory to get an interactive prompt. Note that the `open /test/alpine-0/0` is identical to the command that is executed in interactive mode above.
+The important piece here is to pass the `-t` flag to the SSH client. This requests a TTY for the session and is mandatory to get an interactive prompt. Note that the `open /test/alpine-0/0` is identical to the command that is executed in interactive mode above.
 
 The same procedure is also possible with e.g. PuTTY but it's easier and conciser to demonstrate with the OpenSSH command line client.
 
