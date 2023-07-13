@@ -116,7 +116,7 @@ We're going to install a Kali cloud image as a custom image into CML. The Kali i
 
 #### Kali Image download and disk conversion
 
-Execute these commands on the CML controller's command line by either using the Cockpit terminal or by using PuTTY to log into CML. Remember that the username is `sysadmin` and the port to connect to is `1122`. The password is `C1sco012345`.
+Execute these commands on the CML controller's command line by either using the Cockpit terminal or by using PuTTY to log into CML. Remember that the username is `sysadmin` and the port to connect to is `1122`. The password is `C1sco12345`.
 
 These commands don't require privileges; they can be run by the sysadmin user. We use `cURL` to download the image from the web.
 
@@ -410,7 +410,7 @@ Next, we need to verify the configuration. If nothing has been pre-configured th
 - use your native clients to connect to the ports displayed, there's PuTTY and UltraVNC available. 
 
 > **Note** when using PuTTY, ensure that the connection type is Telnet, not SSH to access `serial0` on the machine
-  
+
 
 Alternatively, most of these steps can also be done via the convenient "breakout UI" which is available when running `breakout ui`. When running the UI, point your browser to the address displayed in the command prompt:
 
@@ -562,5 +562,4 @@ https://software.cisco.com/download/home/286193282/type/286326381
 Download the OVA and the reference platform ISO file (here, the 2.5.1 version is shown):
 
 ![image-20230706072246252](./resources/image-20230706072246252.png)
-
 
